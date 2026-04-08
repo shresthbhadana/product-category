@@ -104,6 +104,6 @@ const ProductSchema = new mongoose.Schema(
 ProductSchema.index({ brand: 1, is_active: 1 }); 
 ProductSchema.index({ "location.city": 1 }); 
 
-ProductSchema.index({ product_name: "text", description: "text", brand: "text" });
+ProductSchema.index({ product_name: "text", description: "text", brand: "text" ,location:"text"});
 
 module.exports = mongoose.model("Product", ProductSchema);

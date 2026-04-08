@@ -1,10 +1,10 @@
 const ProductCategory = require("../models/productCategoryModel");
 
-async function createCategory(data) {
+exports.createCategory = async (data) => {
   return await ProductCategory.create(data);
 }
 
-const getAllCategories = async (filter, search, skip, limit) => {
+exports.getAllCategories = async (filter, search, skip, limit) => {
   filter = filter || {};
   skip = skip || 0;
   limit = limit || 0;
@@ -24,16 +24,16 @@ const getAllCategories = async (filter, search, skip, limit) => {
     .limit(limit);
 }
 
-const getCategoryById = async (id) => {
+exports.getCategoryById = async (id) => {
   return await ProductCategory.findById(id);
 }
 
-const updateCategory = async (id, data) => {
+exports.updateCategory = async (id, data) => {
   return await ProductCategory.findByIdAndUpdate(id, data, { new: true });
 }
 
 
-const deleteCategory = async (id) => {
+exports.deleteCategory = async (id) => {
   return await ProductCategory.findByIdAndUpdate(
     id,
     { is_active: false },
@@ -41,10 +41,3 @@ const deleteCategory = async (id) => {
   );
 }
 
-module.exports = {
-  createCategory,
-  getAllCategories,
-  getCategoryById,
-  updateCategory,
-  deleteCategory,
-};

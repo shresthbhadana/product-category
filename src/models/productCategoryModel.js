@@ -39,7 +39,7 @@ const ProductCategorySchema = new mongoose.Schema({
     }
 });
 
-ProductCategorySchema.index({ product_category: "text", tags: "text" });
+ProductCategorySchema.index({ product_category: "text", tags: "text" ,brand : "text" ,grade : "text" ,dimension : "text" ,unit : "text" });
 
 const ProductCategory = mongoose.model("ProductCategory", ProductCategorySchema);
 
