@@ -36,7 +36,7 @@ const ProductSchema = new mongoose.Schema(
     },
     dimension: {
       type: [String],
-      maxLength :50,
+      maxlength: 50,
     },
     location: {
         	type: [
@@ -75,8 +75,8 @@ const ProductSchema = new mongoose.Schema(
       default: 0,
     },
     average_rating: {
-      type: String,
-      default: "0",
+      type: Number,
+      default: 0,
       index: true, 
     },
     catalogue_url: {
@@ -88,6 +88,12 @@ const ProductSchema = new mongoose.Schema(
       default: 0,
       index: true, 
     },
+    mathchPercentage : {
+      type : Number,
+        default : 0,
+          index: true,
+
+    }
   },
   {
     timestamps: {
@@ -103,7 +109,8 @@ const ProductSchema = new mongoose.Schema(
 
 ProductSchema.index({ brand: 1, is_active: 1 }); 
 ProductSchema.index({ "location.city": 1 }); 
+ProductSchema.index({ matchPercentage: -1 });
 
-ProductSchema.index({ product_name: "text", description: "text", brand: "text" ,location:"text"});
+ProductSchema.index({ product_name: "text", description: "text", brand: "text", unit: "text" });
 
 module.exports = mongoose.model("Product", ProductSchema);
