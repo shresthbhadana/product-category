@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema({
-    order_id : String,
-    razopay_payment_id : String,
-    razopay_order_id : String,
+    razorpay_order_id : String,
+    razorpay_payment_id : String,
     amount : Number,
     currency :{
         type : String,

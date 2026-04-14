@@ -1,7 +1,6 @@
 
 const paymentService = require("../services/paymentService")
 
-
 exports.createOrder = async (req, res) => {
   try {
     const { amount } = req.body;

@@ -2,8 +2,6 @@
 
 const productService = require("../services/productServices");
 
-
-
 exports.createProduct = async (req, res) => {
   try {
     const product = await productService.createProduct(req.body);
@@ -23,6 +21,7 @@ exports.getAllProducts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 exports.searchProducts = async (req, res) => {
   try {
     const data = await productService.searchProducts(req.query);
