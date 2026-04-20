@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { createSubscription, getSubscriptions, removeOfferFromSubscription,updateSubscription,getSubscriptionInvoices, retrieveScheduledChanges, pauseSubscription,resumeSubscription, cancelSubscription } = require('../controllers/subscriptionController');
+const { createSubscription, getSubscriptions, getSubscriptionById, removeOfferFromSubscription,updateSubscription,getSubscriptionInvoices, retrieveScheduledChanges, pauseSubscription,resumeSubscription, cancelSubscription } = require('../controllers/subscriptionController');
 
 /**
  * @swagger
@@ -103,6 +103,37 @@ router.post('/create', createSubscription);
  *         description: Invalid request
  */
 router.get("/", getSubscriptions);
+
+/**
+ * @swagger
+ * /api/subscriptions/{id}:
+ *   get:
+ *     summary: Get a subscription by ID
+ *     tags: [Subscriptions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Razorpay subscription ID or Database ID
+ *     responses:
+ *       200:
+ *         description: Subscription details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *       404:
+ *         description: Subscription not found
+ */
+
+router.get("/:id",getSubscriptionById);
 
 /**
  * @swagger

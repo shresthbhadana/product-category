@@ -1,4 +1,3 @@
-// src/models/subscription.model.js
 const mongoose = require('mongoose');
 
 const subscriptionSchema = new mongoose.Schema({
@@ -7,8 +6,8 @@ const subscriptionSchema = new mongoose.Schema({
     required: true,
   },
   plan_id: {
-    type: String,
-    required: true,
+  type  : mongoose.Schema.Types.ObjectId,
+  ref : "Plan"
   },
   customer_id: {
     type: String,
@@ -58,7 +57,8 @@ const subscriptionSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-offer_id: String,
+
+  
   short_url: String,
 
   has_scheduled_changes: Boolean,

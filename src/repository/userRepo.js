@@ -30,6 +30,9 @@ exports.findByMobile = async (mobile) => {
 exports.updateUser = async (id, data) => {
   return await User.findByIdAndUpdate(id, data, { new: true });
 }
+exports.getUserWithSubscriptions = async (userId) => {
+  return await User.findById(userId).populate("subscriptions");
+};
 
 exports.deleteUser = async (id) => {
   return await User.findByIdAndDelete(id);

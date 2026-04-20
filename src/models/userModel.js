@@ -6,6 +6,7 @@ const UserSchema = new Schema({
   user_id: String,
   email: String,
   mobile: String,
+  password: String,
   name: String,
   company_name: String,
   role: String,
@@ -30,6 +31,10 @@ const UserSchema = new Schema({
   razorpay_customer_id: String,
   deleted_at: Date,
   is_logged_in: Boolean,
+  subscription: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Subscription",
+  }],
 }, {
   timestamps: true,
 });

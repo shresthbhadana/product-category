@@ -27,7 +27,8 @@ exports.getProducts = async (query) => {
 
 
 exports.searchProducts = async(query)=>{
-  const {search,city} =query;
+  const search = query.search || query.q || "";
+  const city = query.city;
 
   const filter = {};
   if (city) filter["location.city"] = city;

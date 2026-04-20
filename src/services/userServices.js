@@ -15,7 +15,7 @@ exports.signup = async (data) => {
   }
 
   if (data.password) {
-    const hashedPassword = await bcrypt.hash(data.password, SALT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(data.password, 10);
     data.password = hashedPassword;
   }
 
@@ -103,7 +103,15 @@ exports.updateUser = async (id, data) => {
   }
   return await userRepo.updateUser(id, data);
   }
+exports.getUserSubscriptions = async (userId) => {
+  const user = await userRepo.getUserWithSubscriptions(userId);
 
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  return user.subscription;
+};
 
 exports.deleteUser = async (id) => {
   return await userRepo.deleteUser(id);

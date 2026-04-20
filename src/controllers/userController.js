@@ -46,6 +46,17 @@ exports.updateUser = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+exports.getUserSubscriptions = async (req, res) => {
+  try {
+    const data = await userService.getUserSubscriptions(req.params.id);
+    res.json(data);
+  } catch (err) {
+    if (err.message === "User not found") {
+      return res.status(404).json({ error: err.message });
+    }
+    res.status(500).json({ error: err.message });
+  }
+};
 
 exports.deleteUser = async (req, res) => {
   try {

@@ -5,41 +5,63 @@ const subsRepo = require("../repository/subscriptionRepo");
 const getExpiresBy = (minutes=60)=>{
     return Math.floor(Date.now() / 1000) + (minutes * 60);
 }
+exports.createSubscription = async (payload) => {
+  const expiresBy = getExpiresBy(60);
 
-exports.createSubscription = async(payload)=>{
-    const expiresBy = getExpiresBy(60); 
-    const razorpayload = {
-        plan_id: payload.plan_id,
-        total_count: payload.total_count,
-        quantity: payload.quantity,
-        customer_notify: payload.customer_notify,
-        notes: payload.notes,
-        expire_by: expiresBy,
-    }
-     if (payload.offer_id) {
-        razorpayload.offer_id = payload.offer_id;
-    }
-    const response = await razorpay.subscriptions.create(razorpayload);
+  const razorpayload = {
+    plan_id: payload.plan_id,
+    total_count: payload.total_count,
+    quantity: payload.quantity,
+    customer_notify: payload.customer_notify,
+    notes: payload.notes,
+    expire_by: expiresBy,
+  };
 
-    const saved = await subsRepo.createSubscription({
-        razorpay_subscription_id: response.id,
-        plan_id: response.plan_id,
-        customer_id: payload.customer_id,
-        total_count: payload.total_count,
-        quantity: payload.quantity,
-        customer_notify: payload.customer_notify,
-        notes: payload.notes,
-        expire_by: expiresBy,
-        offer_id: payload.offer_id,
-    });
+  const response = await razorpay.subscriptions.create(razorpayload);
 
-    return {
-        db: saved,
-        razorpay: response,
-    }
-}
+  const saved = await subsRepo.createSubscription({
+    razorpay_subscription_id: response.id,
+    plan_id: response.plan_id,
+
+  
+    customerId: payload.userId,   
+    razorpay_customer_id: payload.customer_id, 
+
+    total_count: payload.total_count,
+  });
+
+
+  
+  await User.findByIdAndUpdate(payload.userId, {
+    $push: { subscriptions: saved._id }
+  });
+
+  return {
+    db: saved,
+    razorpay: response,
+  };
+};
+
+   
 exports.getSubscriptions = async(filter)=>{
     return await subsRepo.getSubscriptions(filter);
+};
+
+exports.getSubscriptionById = async(id) => {
+    try {
+        // Fetch from Razorpay
+        const razorpayResponse = await razorpay.subscriptions.fetch(id).catch(() => null);
+        
+        // Fetch from DB
+        const dbResponse = await subsRepo.getSubscriptionById(id);
+        
+        return {
+            razorpay: razorpayResponse,
+            db: dbResponse,
+        };
+    } catch (error) {
+        throw error;
+    }
 };
 
 exports.updateSubscription = async(rzpId, options)=>{

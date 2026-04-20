@@ -1,31 +1,13 @@
+require("dotenv").config();   // 🔥 sabse pehle
 
-const express = require("express");
-const app = express();
+const app = require("./app");
 const connectDB = require("./config/db");
-const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = require('./config/swagger');
-const productRoutes = require("./routes/productRoutes");
-const productCategoryRoutes = require("./routes/productCategoryRoutes");
-const userRoutes = require("./routes/userRoutes");
-const paymentRoutes = require("./routes/paymentRoutes");
-const subscriptionRoutes = require("./routes/subscriptionRoutes");
-const planRoutes = require("./routes/planRoutes");
+const { createAdmin } = require("./createAdmin");
 
-app.use(express.json());
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use("/api/products", productRoutes);
-app.use("/api/categories", productCategoryRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/payments", paymentRoutes);
-app.use("/api/subscriptions", subscriptionRoutes);
-app.use("/api/plans", planRoutes);
+connectDB().then(() => {
+    createAdmin(); 
+});
 
-
-connectDB();
-
-
-
-
-app.listen(5000, () => {
-	console.log("Server started on port 5000");
+app.listen(process.env.PORT || 5000, () => {
+    console.log("Server started");
 });

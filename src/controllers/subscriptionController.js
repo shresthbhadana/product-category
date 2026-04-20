@@ -3,6 +3,7 @@ const service = require("../services/subscriptionService")
 
 exports.createSubscription = async (req, res) => {
   try {
+    console.log("My Request Payload (Subscription):", req.body);
     const data = await service.createSubscription(req.body);
 
     res.status(201).json({
@@ -11,15 +12,38 @@ exports.createSubscription = async (req, res) => {
     });
 
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       success: false,
-      message: err.message,
+      
+      
     });
   }
 };
 exports.getSubscriptions = async (req, res) => {
     try {
         const data = await service.getSubscriptions(req.query);
+        res.status(200).json({
+            success: true,
+            data,
+        });
+    } catch (err) {
+        res.status(400).json({
+            success: false,
+            message: err.message,
+        });
+    }
+};
+
+exports.getSubscriptionById = async (req, res) => {
+    try {
+        const data = await service.getSubscriptionById(req.params.id);
+        if (!data.db && !data.razorpay) {
+            return res.status(404).json({
+                success: false,
+                message: "Subscription not found"
+            });
+        }
         res.status(200).json({
             success: true,
             data,
@@ -94,7 +118,7 @@ exports.getSubscriptionInvoices = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const data = await subscriptionService.fetchSubscriptionInvoices(id);
+        const data = await services.fetchSubscriptionInvoices(id);
 
         res.status(200).json({
             success: true,
@@ -127,7 +151,7 @@ exports.removeOfferFromSubscription = async (req, res) => {
     try {
         const { id, offerId } = req.params;
 
-        const data = await subscriptionService.removeOfferFromSubscription(id, offerId);
+        const data = await service.removeOfferFromSubscription(id, offerId);
 
         res.status(200).json({
             success: true,

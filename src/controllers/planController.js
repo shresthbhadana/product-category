@@ -2,10 +2,14 @@ const planService = require("../services/planService");
 
 exports.createPlan = async (req, res) => {
   try {
+    console.log("My Request Payload (Plan):", req.body);
     const plan = await planService.createPlan(req.body);
     res.status(201).json(plan);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.error("Razorpay Error:", err);
+    // Razorpay returns errors as objects, so err.message might be undefined
+    const errorMessage = err.error || err.description || err.message || "An unknown error occurred";
+    res.status(400).json({ error: errorMessage, details: err });
   }
 };
 

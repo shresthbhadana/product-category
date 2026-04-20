@@ -9,8 +9,17 @@ exports.getSubscriptions = async(filter)=>{
     return await Subscription.find(filter);
 }
 
-exports.getSubscriptionById = async(rzpId)=>{
-    return await Subscription.findOne({razorpay_subscription_id: rzpId})
+exports.getSubscriptionById = async(id)=>{
+    try{
+        if (mongoose.isValidObjectId(id)) {
+            const sub = await Subscription.findById(id);
+            if (sub) return sub;
+        }
+        return await Subscription.findOne({razorpay_subscription_id: id});
+    }catch(error){
+        console.log("Error fetching subscription by Razorpay ID:", error);
+        throw error;
+    }
 }
 
 exports.updateSubscription = async(rzpId, updatedData)=>{
