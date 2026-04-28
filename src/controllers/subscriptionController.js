@@ -1,4 +1,5 @@
 
+const logger = require("../config/logger");
 const service = require("../services/subscriptionService")
 
 exports.createSubscription = async (req, res) => {
@@ -10,6 +11,7 @@ exports.createSubscription = async (req, res) => {
       success: true,
       data,
     });
+    logger.info("subscription created successfully")
 
   } catch (err) {
     console.log(err);
@@ -18,6 +20,7 @@ exports.createSubscription = async (req, res) => {
       
       
     });
+    logger.error("error in creating subscription")
   }
 };
 exports.getSubscriptions = async (req, res) => {
@@ -27,11 +30,13 @@ exports.getSubscriptions = async (req, res) => {
             success: true,
             data,
         });
+        logger.info("subscriptions fetched successfully")
     } catch (err) {
         res.status(400).json({
             success: false,
             message: err.message,
         });
+        logger.error("error in fetching subscriptions")
     }
 };
 
@@ -42,17 +47,20 @@ exports.getSubscriptionById = async (req, res) => {
             return res.status(404).json({
                 success: false,
                 message: "Subscription not found"
-            });
+            })
+            logger.info(`subscription ${req.params.id} not found`);
         }
         res.status(200).json({
             success: true,
             data,
         });
+        logger.info(`subscription ${req.params.id} fetched successfully`)
     } catch (err) {
         res.status(400).json({
             success: false,
             message: err.message,
         });
+        logger.error("error in fetching subscription")
     }
 };
 
@@ -63,11 +71,13 @@ exports.updateSubscription = async (req, res) => {
             success: true,
             data,
         });
+        logger.info("subscription updated succeffully")
     } catch (err) {
         res.status(400).json({
             success: false,
             message: err.message,
         });
+        logger.error("error in updating the subscriptions")
     }
 };
 
@@ -93,11 +103,13 @@ exports.pauseSubscription = async (req, res) => {
             success: true,
             data,
         });
+        logger.info("subscription paused successfully")
     } catch (err) {
         res.status(400).json({
             success: false,
             message: err.message,
         });
+        logger.error("error in pausing the subscription")
     }
 };
 exports.resumeSubscription = async (req, res) => {
@@ -107,11 +119,13 @@ exports.resumeSubscription = async (req, res) => {
             success: true,
             data,
         });
+        logger.info("subscription resumed successfully")
     } catch (err) {
         res.status(400).json({
             success: false,
             message: err.message,
         });
+        logger.error("error in resuming the subscriptions")
     }
 };
 exports.getSubscriptionInvoices = async (req, res) => {
@@ -124,12 +138,14 @@ exports.getSubscriptionInvoices = async (req, res) => {
             success: true,
             data,
         });
+        logger.info("invoice fetched successfully")
 
     } catch (err) {
         res.status(500).json({
             success: false,
             message: err.message,
         });
+        logger.error("error in fetching")
     }
 };
 exports.cancelSubscription = async(req,res)=>{
@@ -140,11 +156,13 @@ exports.cancelSubscription = async(req,res)=>{
             success: true,
             data,
         });
+        logger.info("subscription cancelled successfully")
     } catch (err) {
         res.status(400).json({
             success: false,
             message: err.message,
         });
+        logger.error("error in cancelling the subscription")
     }
 }
 exports.removeOfferFromSubscription = async (req, res) => {
@@ -157,12 +175,14 @@ exports.removeOfferFromSubscription = async (req, res) => {
             success: true,
             data,
         });
+        logger.info("offer removed successfully")
 
     } catch (err) {
         res.status(500).json({
             success: false,
             message: err.message,
         });
+        logger.error("error in removing offer")
     }
 };
 

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { createSubscription, getSubscriptions, getSubscriptionById, removeOfferFromSubscription,updateSubscription,getSubscriptionInvoices, retrieveScheduledChanges, pauseSubscription,resumeSubscription, cancelSubscription } = require('../controllers/subscriptionController');
-
+const isadmin = require("../middlewares/adminMiddleware")
 /**
  * @swagger
  * components:
@@ -71,7 +71,7 @@ const { createSubscription, getSubscriptions, getSubscriptionById, removeOfferFr
  *       500:
  *         description: Server error
  */
-router.post('/create', createSubscription);
+router.post('/create',isadmin, createSubscription);
 
 /**
  * @swagger

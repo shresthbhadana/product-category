@@ -1,5 +1,6 @@
 
-const paymentService = require("../services/paymentService")
+const paymentService = require("../services/paymentService");
+const logger = require("../config/logger");
 
 exports.createOrder = async (req, res) => {
   try {
@@ -8,8 +9,10 @@ exports.createOrder = async (req, res) => {
     const order = await paymentService.createOrder(amount);
 
     res.json(order);
+     logger.info("Order created successfully");
   } catch (err) {
     res.status(500).json({ error: err.message });
+    logger.error("Error creating order");
   }
 };
 
@@ -23,7 +26,9 @@ exports.verifyPayment = async (req, res) => {
       message: "Payment successful",
       data,
     });
+logger.info("payment verified successfully")
   } catch (err) {
     res.status(500).json({ error: err.message });
+    logger.error("Error verifying payment");
   }
 };
